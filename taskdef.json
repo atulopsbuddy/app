@@ -1,7 +1,7 @@
 {
   "family": "app-new",
   "networkMode": "awsvpc",
-  "executionRoleArn": "arn:aws:iam::065727387422:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::566129640258:role/ecsTaskExecutionRole",
   "requiresCompatibilities": [
     "FARGATE"
   ],
