@@ -7,7 +7,7 @@
   "memory": "512",
   "containerDefinitions": [
     {
-      "name": "nginx",
+      "name": "app",
       "image": "<IMAGE_URI>",
       "cpu": 0,
       "essential": true,
