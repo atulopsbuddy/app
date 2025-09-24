@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: app-new
+        TaskDefinition: app-service-taskdef
         LoadBalancerInfo:
-          ContainerName: "nginx"
+          ContainerName: "app"
           ContainerPort: 80
