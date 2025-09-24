@@ -3,10 +3,10 @@ version: 0.2
 env:
   variables:
     AWS_DEFAULT_REGION: "ap-south-1"
-    AWS_ACCOUNT_ID: "566129640258"
-    ECR_REPO_NAME: "test-app-repo"
-    IMAGE_TAG: "latest"
-    CLUSTER_NAME: "test-ecs-cluster"
+    AWS_ACCOUNT_ID: "065727387422"
+    ECR_REPO_NAME: "procur-stg-app-repo"
+    IMAGE_TAG: "nginx"
+    CLUSTER_NAME: "procur-stg-ecs-cluster"
     SERVICE_NAME: "app-service"
 
 phases:
