@@ -5,7 +5,7 @@ env:
     AWS_DEFAULT_REGION: "ap-south-1"
     AWS_ACCOUNT_ID: "065727387422"
     ECR_REPO_NAME: "procur-stg-app-repo"
-    IMAGE_TAG: "latest"
+    IMAGE_TAG: "app"
     CLUSTER_NAME: "procur-stg-ecs-cluster"
     SERVICE_NAME: "app-service"
 
