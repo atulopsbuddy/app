@@ -25,9 +25,20 @@ phases:
     commands:
       - echo Pushing Docker image to ECR...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO_NAME:$IMAGE_TAG
-      - echo Build completed on `date`
 
+      - echo Updating task definition with new image...
+      - sed -i "s|<IMAGE_URI>|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO_NAME:$IMAGE_TAG|g" taskdef.json
+
+      - |
+        echo "Registering new task definition..."
+        TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://taskdef.json --query 'taskDefinition.taskDefinitionArn' --output text)
+        echo "Registered task definition: $TASK_DEF_ARN"
+     
+      - echo "Updating appspec.yaml with new task definition ARN..."
+      - sed -i "s|<TASK_DEFINITION>|$TASK_DEF_ARN|g" appspec.yaml
+      - echo Build completed on `date`
+      
 artifacts:
   files:
-    - appspec.yaml
     - taskdef.json
+    - appspec.yaml
