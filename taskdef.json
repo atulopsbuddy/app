@@ -1,5 +1,5 @@
 {
-  "family": "app",
+  "family": "app-service-taskdef",
   "networkMode": "awsvpc",
   "executionRoleArn": "arn:aws:iam::065727387422:role/ecsTaskExecutionRole",
   "requiresCompatibilities": ["FARGATE"],
