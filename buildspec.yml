@@ -8,6 +8,7 @@ env:
     IMAGE_TAG: "app"
     CLUSTER_NAME: "procur-stg-ecs-cluster"
     SERVICE_NAME: "app-service"
+    CONTAINER_NAME: "app"
 
 phases:
   pre_build:
