@@ -1,14 +1,14 @@
 version: 0.2
 
 env:
-  variables:
-    AWS_DEFAULT_REGION: "ap-south-1"
-    AWS_ACCOUNT_ID: "065727387422"
-    ECR_REPO_NAME: "procur-stg-app-repo"
-    IMAGE_TAG: "app"
-    CLUSTER_NAME: "procur-stg-ecs-cluster"
-    SERVICE_NAME: "app-service"
-    CONTAINER_NAME: "app"
+  parameter-store:
+    AWS_DEFAULT_REGION: "/procur/stg/shared/AWS_DEFAULT_REGION"
+    AWS_ACCOUNT_ID: "/procur/stg/shared/AWS_ACCOUNT_ID"
+    ECR_REPO_NAME: "/procur/stg/shared/ECR_REPO_NAME"
+    CLUSTER_NAME: "/procur/stg/shared/CLUSTER_NAME"
+    SERVICE_NAME: "/procur/stg/app/SERVICE_NAME"
+    CONTAINER_NAME: "/procur/stg/app/CONTAINER_NAME"
+    IMAGE_TAG: "/procur/stg/app/IMAGE_TAG"
 
 phases:
   pre_build:
