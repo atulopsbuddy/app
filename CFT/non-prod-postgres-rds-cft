@@ -1,0 +1,123 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Aurora PostgreSQL (single instance) using small Graviton-based instance class (db.t4g.medium) with explicit PostgreSQL port.
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC where the DB cluster will be created.
+
+  DBSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Two or more private subnets for the Aurora DB subnet group.
+
+  AllowedCidr:
+    Type: String
+    Default: 10.0.0.0/8
+    Description: CIDR block allowed to connect to the DB (use your bastion or admin IP).
+
+  DBClusterIdentifier:
+    Type: String
+    Default: aurora-postgres-cluster
+    Description: Logical name for the Aurora cluster.
+
+  DBInstanceClass:
+    Type: String
+    Default: db.t4g.medium
+    Description: Aurora instance class (small Graviton instance).
+
+  MasterUsername:
+    Type: String
+    Default: masteruser
+    Description: Master username for the DB.
+
+  MasterUserPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    MaxLength: 41
+    Description: Master password for the DB.
+
+  DBName:
+    Type: String
+    Default: appdb
+    Description: Initial database name.
+
+  BackupRetentionDays:
+    Type: Number
+    Default: 1
+    MinValue: 1
+    MaxValue: 35
+    Description: Number of days to retain backups.
+
+Resources:
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Aurora PostgreSQL
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: !Ref AllowedCidr
+      Tags:
+        - Key: Name
+          Value: !Sub "${DBClusterIdentifier}-sg"
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for Aurora PostgreSQL cluster
+      SubnetIds: !Ref DBSubnetIds
+      DBSubnetGroupName: !Sub "${DBClusterIdentifier}-subnet-group"
+
+  AuroraDBCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-postgresql
+      EngineVersion: 17.4
+      DBClusterIdentifier: !Ref DBClusterIdentifier
+      MasterUsername: !Ref MasterUsername
+      MasterUserPassword: !Ref MasterUserPassword
+      DatabaseName: !Ref DBName
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref DBSecurityGroup
+      BackupRetentionPeriod: !Ref BackupRetentionDays
+      StorageEncrypted: true
+      DeletionProtection: false
+      Port: 5432                   # <-- force PostgreSQL standard port
+      Tags:
+        - Key: Name
+          Value: !Sub "${DBClusterIdentifier}"
+
+  AuroraDBInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Sub "${DBClusterIdentifier}-instance"
+      Engine: aurora-postgresql
+      EngineVersion: 17.4
+      DBClusterIdentifier: !Ref AuroraDBCluster
+      DBInstanceClass: !Ref DBInstanceClass
+      PubliclyAccessible: false
+      Tags:
+        - Key: Name
+          Value: !Sub "${DBClusterIdentifier}-instance"
+
+Outputs:
+  ClusterEndpoint:
+    Description: Writer endpoint for the Aurora PostgreSQL cluster
+    Value: !GetAtt AuroraDBCluster.Endpoint.Address
+
+  ClusterPort:
+    Description: Port number for the cluster
+    Value: !GetAtt AuroraDBCluster.Endpoint.Port
+
+  DBClusterIdentifierOut:
+    Description: Aurora Cluster Identifier
+    Value: !Ref DBClusterIdentifier
+
+  SecurityGroupId:
+    Description: Security Group ID for the Aurora PostgreSQL cluster
+    Value: !Ref DBSecurityGroup
