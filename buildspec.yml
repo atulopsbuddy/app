@@ -2,13 +2,13 @@ version: 0.2
 
 env:
   parameter-store:
-    AWS_DEFAULT_REGION: "/procur/stg/shared/AWS_DEFAULT_REGION"
-    AWS_ACCOUNT_ID: "/procur/stg/shared/AWS_ACCOUNT_ID"
-    ECR_REPO_NAME: "/procur/stg/shared/ECR_REPO_NAME"
-    CLUSTER_NAME: "/procur/stg/shared/CLUSTER_NAME"
-    SERVICE_NAME: "/procur/stg/app/SERVICE_NAME"
-    CONTAINER_NAME: "/procur/stg/app/CONTAINER_NAME"
-    IMAGE_TAG: "/procur/stg/app/IMAGE_TAG"
+    AWS_DEFAULT_REGION: "/procur/test/shared/AWS_DEFAULT_REGION"
+    AWS_ACCOUNT_ID: "/procur/test/shared/AWS_ACCOUNT_ID"
+    ECR_REPO_NAME: "/procur/test/shared/ECR_REPO_NAME"
+    CLUSTER_NAME: "/procur/test/shared/CLUSTER_NAME"
+    SERVICE_NAME: "/procur/test/app/SERVICE_NAME"
+    CONTAINER_NAME: "/procur/test/app/CONTAINER_NAME"
+    IMAGE_TAG: "/procur/test/app/IMAGE_TAG"
 
 phases:
   pre_build:
