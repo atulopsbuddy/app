@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Shared SSM Parameters (Environment Agnostic)
+
+Parameters:
+  Environment:
+    Type: String
+    AllowedValues:
+      - dev
+      - stg
+      - prod
+      - test
+    Description: Environment name (dev, stg, prod)
+
+  AWSDefaultRegion:
+    Type: String
+    Default: ap-south-1
+    Description: Default AWS region
+
+  AWSAccountId:
+    Type: String
+    Description: AWS Account ID
+
+  EcrRepoName:
+    Type: String
+    Default: procur-stg-repo
+    Description: ECR repository name
+
+  ClusterName:
+    Type: String
+    Default: procur-stg-ecs-cluster
+    Description: ECS Cluster name
+
+Resources:
+  AWSDefaultRegionParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/procur/${Environment}/shared/AWS_DEFAULT_REGION"
+      Type: String
+      Value: !Ref AWSDefaultRegion
+
+  AWSAccountIdParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/procur/${Environment}/shared/AWS_ACCOUNT_ID"
+      Type: String
+      Value: !Ref AWSAccountId
+
+  EcrRepoNameParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/procur/${Environment}/shared/ECR_REPO_NAME"
+      Type: String
+      Value: !Ref EcrRepoName
+
+  ClusterNameParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/procur/${Environment}/shared/CLUSTER_NAME"
+      Type: String
+      Value: !Ref ClusterName
