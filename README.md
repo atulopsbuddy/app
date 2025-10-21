@@ -4,11 +4,11 @@ Infrastructure Deployment Guide
 Use the following CloudFormation template to create the VPC.
 It will provision:
 
-2 Public Subnets
+   2 Public Subnets
 
-2 Application (Private) Subnets
+   2 Application (Private) Subnets
 
-2 Database Subnets
+   2 Database Subnets
 
 Template: CFT/vpc-cft
 
